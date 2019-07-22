@@ -46,7 +46,6 @@ export default {}
 </script>
 <style>
 @import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap');
 
 /* Global */
