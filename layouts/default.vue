@@ -5,8 +5,7 @@
         <div class="container">
           <b-navbar toggleable="lg" type="dark" class="row">
             <b-navbar-brand>
-              <nuxt-link to="/" class="navbar-brand">
-              <img style="max-width: 140px; width: 100%; vertical-align: sub;" alt="Polkadot" src="/img/Polkadot_Logotype_white.png" > Validators</nuxt-link>
+              <nuxt-link to="/" class="navbar-brand">PolkaStats</nuxt-link>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">

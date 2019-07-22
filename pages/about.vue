@@ -15,9 +15,9 @@ import axios from 'axios'
 export default {
   head () {
     return {
-      title: 'POLKADOT VALIDATORS - About this web app',
+      title: 'PolkaStats - About PolkaStats',
       meta: [
-        { hid: 'description', name: 'description', content: 'About this web app' }
+        { hid: 'description', name: 'description', content: 'About PolkaStats' }
       ]
     }
   }

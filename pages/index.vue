@@ -140,7 +140,7 @@
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
                     <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Unset as Favorite"></i>
                   </a>
-                  <nuxt-link class="detail" :to="{name: 'validator-accountId', params: { accountId: validator.accountId } }" title="Validator Graphs (Beta)">
+                  <nuxt-link class="detail" :to="{name: 'validator', params: { accountId: validator.accountId } }" title="Validator Graphs (Beta)">
                     <i class="fas fa-chart-line"></i>
                   </nuxt-link>                  
                   <div class="card-body" v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
@@ -264,9 +264,9 @@ import editable from "../components/editable.vue";
 export default {
   head () {
     return {
-      title: 'POLKADOT VALIDATORS - Active Polkadot validators in Alexander testnet',
+      title: 'PolkaStats - Polkadot network statistics',
       meta: [
-        { hid: 'description', name: 'description', content: 'Active Polkadot validators in Alexander testnet' }
+        { hid: 'description', name: 'description', content: 'Polkadot network statistics' }
       ]
     }
   },
