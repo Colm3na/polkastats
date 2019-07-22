@@ -2,41 +2,32 @@
   <div>
     <section>
       <b-container class="main pt-4 pb-5">
-        
-        <!-- <b-breadcrumb class="mb-5" :items="items"></b-breadcrumb> -->
-
         <template v-for="(validator, index) in validators">
           <template v-if="validator.accountId == accountId">
             <div class="row">
-              <div class="col-1">
+              <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <!-- <nuxt-link :to="{name: 'validator', query: { accountId: validators[index-1].accountId } }" title="Previous validator"> -->
                   <a v-bind:href="'/validator?accountId=' + validators[index-1].accountId" title="Previous validator">
                     <i class="fas fa-2x fa-chevron-left"></i>
                   </a>
-                  <!-- </nuxt-link> -->
                 </template>
               </div>
-              <div class="col-md-10">
-                <h3 class="text-center mb-1">Validator {{ accountId }}</h3>
+              <div class="col-8  col-lg-10">
+                <h3 class="text-center mb-1">Validator <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h3>
               </div>
-              <div class="col-1 text-right">
+              <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
-                  <!-- <nuxt-link :to="{name: 'validator', query: { accountId: validators[index+1].accountId } }" title="Next validator"> -->
                   <a v-bind:href="'/validator?accountId=' + validators[index+1].accountId" title="Next validator">
                     <i class="fas fa-2x fa-chevron-right"></i>
                   </a>
-                  <!-- </nuxt-link> -->
                 </template>
               </div>
             </div>
-            <div class="validator card mt-5 mb-3">
+            <div class="validator card mt-4 mb-3">
               <div class="card-body" v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                 <p class="text-right">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
-                    <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
-                    <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
-                  </a>
+                  <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" title="Favorite"></i>
+                  <i v-else class="favorite fas fa-star" style="color: #e6dfdf;"></i>
                 </a>
                 <div class="row">
                   <div class="col-md-3 text-center">
@@ -147,8 +138,7 @@
             </div>
           </template>
         </template>
-
-        <div class="mt-5" id="stake-evolution-chart">
+        <div class="mt-4" id="stake-evolution-chart">
           <apexchart type=line height=350 :options="StakeEvolutionChartOptions" :series="StakeEvolutionSeries" />
         </div>
       </b-container>
@@ -185,16 +175,12 @@ export default {
         block: 'https://polkascan.io/pre/alexander/block/',
         account: 'https://polkascan.io/pre/alexander/account/'
       },
-
-      
       validatorsTmp: [],
       validators: [],
       offline: [],
       favorites: [],
-      
-      
       StakeEvolutionSeries: [{
-          name: "Total Stake (DOT)",
+          name: "Total bonded (DOT)",
           data: []
       }],
       StakeEvolutionChartOptions: {
@@ -212,7 +198,7 @@ export default {
           curve: 'straight'
         },
         title: {
-          text: 'Stake evolution graph (24h)',
+          text: 'Total bonded graph (24h)',
           align: 'center',
           margin: 10,
           style: {
@@ -251,7 +237,7 @@ export default {
           max: 0,
           */
           title: {
-            text: 'Total Stake (DOT)'
+            text: 'Total bonded (DOT)'
           },
           labels: {
             formatter: function (val) {
@@ -328,11 +314,10 @@ export default {
                 max: 0,
                 */
                 title: {
-                  text: 'Total Stake'
+                  text: 'Total bonded (DOT)'
                 },
                 labels: {
                   formatter: function (val) {
-                    //return val;
                     return (val / 1000000000000000).toFixed(6);
                   }
                 }         
@@ -437,11 +422,17 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .fas.fa-copy {
   cursor: pointer;
   color: #d75ea1;
   font-size: 0.9rem;
   margin-left: 0.1rem;
+}
+.rank {
+  margin-top: -0.6rem
+}
+.favorite {
+  cursor: initial;
 }
 </style>
