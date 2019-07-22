@@ -1,22 +1,24 @@
-# polkadot-validators-stats
+# Polkastats
 
-> Polkadot active validator statistics
+> Polkadot network statistics
 
-## Build Setup
+## Build frontend
 
 ``` bash
-# install dependencies
+# Clone this repo
+$ git clone https://github.com/Colm3na/polkastats.git
+
+# Install dependencies
 $ npm run install
 
-# serve with hot reload at localhost:3000
+# Serve with hot reload at localhost:3000
 $ npm run dev
 
-# build for production and launch server
+# Build for production
 $ npm run build
-$ npm run start
 
 # generate static project
 $ npm run generate
 ```
 
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+## Build backend
