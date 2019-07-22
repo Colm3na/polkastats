@@ -328,7 +328,6 @@ export default {
                 }
               }
               vm.validators = vm.validatorsTmp;
-              console.log(vm.validators);
             })          
         })
     },
