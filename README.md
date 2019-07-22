@@ -21,4 +21,3 @@ $ npm run build
 $ npm run generate
 ```
 
-## Build backend
