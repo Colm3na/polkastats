@@ -2,117 +2,142 @@
   <div>
     <section>
       <b-container class="main pt-4 pb-5">
-        <h2 class="text-center mb-3">Validator {{ accountId }}</h2>
+        
         <!-- <b-breadcrumb class="mb-5" :items="items"></b-breadcrumb> -->
 
         <template v-for="(validator, index) in validators">
-          <div class="validator card mt-5 mb-3" v-if="validator.accountId == accountId">
-            <div class="card-body" v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
-              <p class="text-right">
-                <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
-                  <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
-                  <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
-                </a>
-              </a>
-              <div class="row">
-                <div class="col-md-3 text-center">
-                  <p class="display-1 mb-0 rank">{{ index+1 }}</p>
-                  <p class="bonded mb-1" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
-                  <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
-                </div>
-                <div class="col-md-9">
-                  <div v-if="validator.controllerId != validator.nextSessionId">
-                    <div class="row">
-                      <div class="col-md-3 mb-2">
-                        <strong>Controller</strong>
-                      </div>
-                      <div class="col-md-9 mb-2">
-                        <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }} </span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
-                        </a>
-                        <a v-clipboard:copy="validator.controllerId" v-on:click="makeToast('Address ' + validator.controllerId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-3 mb-2">
-                        <strong>Session</strong>
-                      </div>
-                      <div class="col-md-9 mb-2">                 
-                        <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>     
-                        </a>
-                        <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-else>
-                    <div class="row">
-                      <div class="col-md-3 mb-2">
-                        <strong>Controller/Session</strong>
-                      </div>
-                      <div class="col-md-9 mb-2">
-                        <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>
-                        </a>
-                        <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3 mb-2">
-                      <strong>Stash</strong>
-                    </div>
-                    <div class="col-md-9 mb-2">
-                      <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
-                        <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
-                        <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
-                      </a>
-                      <a v-clipboard:copy="validator.stashId" v-on:click="makeToast('Address ' + validator.stashId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
-                    </div>
-                  </div>
-                  <div class="row mt-2">
-                    <div class="col-md-3 mb-2">
-                      <strong>Comission</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      {{ validator.validatorPrefs.validatorPayment / 100000000000000 }}%
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col-md-3 mb-2">
-                      <strong>Unstake threshold</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 unstake">
-                      {{ validator.validatorPrefs.unstakeThreshold}}
-                    </div>
-                  </div>
-                  <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                    <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+          <template v-if="validator.accountId == accountId">
+            <div class="row">
+              <div class="col-1">
+                <template v-if="index > 0">
+                  <!-- <nuxt-link :to="{name: 'validator', query: { accountId: validators[index-1].accountId } }" title="Previous validator"> -->
+                  <a v-bind:href="'/validator?accountId=' + validators[index-1].accountId" title="Previous validator">
+                    <i class="fas fa-2x fa-chevron-left"></i>
                   </a>
-                  <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
-                    <div v-for="staker in validator.stakers.others" class="row">
-                      <div class="col-8 who">                      
-                        <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                          <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
-                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ staker.who }}</span>                        
-                        </a>
+                  <!-- </nuxt-link> -->
+                </template>
+              </div>
+              <div class="col-md-10">
+                <h3 class="text-center mb-1">Validator {{ accountId }}</h3>
+              </div>
+              <div class="col-1 text-right">
+                <template v-if="index < validators.length - 1">
+                  <!-- <nuxt-link :to="{name: 'validator', query: { accountId: validators[index+1].accountId } }" title="Next validator"> -->
+                  <a v-bind:href="'/validator?accountId=' + validators[index+1].accountId" title="Next validator">
+                    <i class="fas fa-2x fa-chevron-right"></i>
+                  </a>
+                  <!-- </nuxt-link> -->
+                </template>
+              </div>
+            </div>
+            <div class="validator card mt-5 mb-3">
+              <div class="card-body" v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
+                <p class="text-right">
+                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
+                    <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
+                    <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
+                  </a>
+                </a>
+                <div class="row">
+                  <div class="col-md-3 text-center">
+                    <p class="display-1 mb-0 rank">{{ index+1 }}</p>
+                    <p class="bonded mb-1" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
+                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
+                  </div>
+                  <div class="col-md-9">
+                    <div v-if="validator.controllerId != validator.nextSessionId">
+                      <div class="row">
+                        <div class="col-md-3 mb-2">
+                          <strong>Controller</strong>
+                        </div>
+                        <div class="col-md-9 mb-2">
+                          <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
+                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }} </span>
+                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
+                          </a>
+                          <a v-clipboard:copy="validator.controllerId" v-on:click="makeToast('Address ' + validator.controllerId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
+                        </div>
                       </div>
-                      <div class="col-4 text-right value">
-                        {{ formatDot(staker.value) }} DOT
+                      <div class="row">
+                        <div class="col-md-3 mb-2">
+                          <strong>Session</strong>
+                        </div>
+                        <div class="col-md-9 mb-2">                 
+                          <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
+                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
+                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>     
+                          </a>
+                          <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div v-if="validator.offline.length > 0">
-                    <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
-                      <h6 class="h6 offline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
+                    <div v-else>
+                      <div class="row">
+                        <div class="col-md-3 mb-2">
+                          <strong>Controller/Session</strong>
+                        </div>
+                        <div class="col-md-9 mb-2">
+                          <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
+                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
+                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>
+                          </a>
+                          <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3 mb-2">
+                        <strong>Stash</strong>
+                      </div>
+                      <div class="col-md-9 mb-2">
+                        <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
+                        </a>
+                        <a v-clipboard:copy="validator.stashId" v-on:click="makeToast('Address ' + validator.stashId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-3 mb-2">
+                        <strong>Comission</strong>
+                      </div>
+                      <div class="col-md-9 mb-2 fee">
+                        {{ validator.validatorPrefs.validatorPayment / 100000000000000 }}%
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-3 mb-2">
+                        <strong>Unstake threshold</strong>
+                      </div>
+                      <div class="col-md-9 mb-2 unstake">
+                        {{ validator.validatorPrefs.unstakeThreshold}}
+                      </div>
+                    </div>
+                    <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
+                      <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
                     </a>
-                    <div class="offlineEvent collapse pt-2 pb-3"  v-bind:id="'offline' + index">
-                      <div v-for="offlineEvent in validator.offline" class="row">
-                        <div class="col-12" style="color: #d75ea1;">                      
-                          <i class="far fa-angry"></i> Reported offline {{ offlineEvent.number }} time/s at block <a class="block" v-bind:href="blockExplorer.block + offlineEvent.block" target="_blank">#{{ thousandsSeparator(offlineEvent.block) }}</a>
+                    <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
+                      <div v-for="staker in validator.stakers.others" class="row">
+                        <div class="col-8 who">                      
+                          <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
+                            <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
+                            <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ staker.who }}</span>                        
+                          </a>
+                        </div>
+                        <div class="col-4 text-right value">
+                          {{ formatDot(staker.value) }} DOT
+                        </div>
+                      </div>
+                    </div>
+                    <div v-if="validator.offline.length > 0">
+                      <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
+                        <h6 class="h6 offline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
+                      </a>
+                      <div class="offlineEvent collapse pt-2 pb-3"  v-bind:id="'offline' + index">
+                        <div v-for="offlineEvent in validator.offline" class="row">
+                          <div class="col-12" style="color: #d75ea1;">                      
+                            <i class="far fa-angry"></i> Reported offline {{ offlineEvent.number }} time/s at block <a class="block" v-bind:href="blockExplorer.block + offlineEvent.block" target="_blank">#{{ thousandsSeparator(offlineEvent.block) }}</a>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -120,7 +145,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </template>
         </template>
 
         <div class="mt-5" id="stake-evolution-chart">
