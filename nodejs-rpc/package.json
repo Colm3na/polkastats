@@ -1,0 +1,19 @@
+{
+  "name": "polkadt-validator-stats",
+  "version": "0.1.0",
+  "description": "List active validators in Polkadot network",
+  "main": "index.js",
+  "author": "Mario Pino Uceda",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@polkadot/api": "*",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.2"
+  }
+}
