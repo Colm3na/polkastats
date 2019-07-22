@@ -5,7 +5,7 @@
         <div class="container">
           <b-navbar toggleable="lg" type="dark" class="row">
             <b-navbar-brand>
-              <nuxt-link to="/" class="navbar-brand">PolkaStats</nuxt-link>
+              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot network statistics"><span class="logo"></span>PolkaStats</nuxt-link>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
@@ -104,6 +104,49 @@ section#navigation nav {
 .navbar {
   padding: 0.5rem 0.3rem 0.5rem 0.3rem;
 }
+/* Animated logo */
+.navbar-brand .logo {
+  margin-right: 0.5rem;
+  margin-top: -0.1rem;
+  display: inline-block;
+  vertical-align: middle;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #e6007a;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(204,169,44, 0.4);
+  animation: pulse 2s infinite;
+}
+.pulse:hover {
+  animation: none;
+}
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+  }
+  70% {
+      -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+  }
+  100% {
+      -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+    box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+  }
+  70% {
+      -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+      box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+      box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+  }
+}
+/* End animated logo */
 .navbar-nav {
   text-transform: uppercase;
 }
