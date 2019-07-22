@@ -58,6 +58,7 @@ export default {
     extend(config, ctx) {
     }
   },
+  /*
   generate: {
     routes: function () {
       return axios.get('https://polkadot-node.mariopino.es/validators')
@@ -71,4 +72,5 @@ export default {
       })
     }
   }
+  */
 }

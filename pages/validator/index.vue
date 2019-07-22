@@ -26,14 +26,14 @@ export default {
   },
   data: function() {
     return {
-      accountId: this.$route.params.accountId,
+      accountId: this.$route.query.accountId,
       items: [
         {
           text: 'Validators',
           href: '/'
         },
         {
-          text: this.$route.params.accountId,
+          text: this.$route.query.accountId,
           active: true
         }
       ],
@@ -120,7 +120,7 @@ export default {
   methods: {
     getValidatorStats: function () {
       var vm = this;
-      axios.get('https://polkadot-node.mariopino.es/validator/' + this.accountId)
+      axios.get('https://polkadot-node.mariopino.es/validator/graph/daily/' + this.accountId)
         .then(function (response) {
 
           // Update chart data
