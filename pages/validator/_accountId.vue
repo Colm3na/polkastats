@@ -130,10 +130,10 @@ export default {
           console.log(response.data);
 
           for (var i = 0; i < response.data.length; i++) {
-            if (i > 0 && response.data[i].amount != response.data[i-1].amount) {
+            //if (i > 0 && response.data[i].amount != response.data[i-1].amount) {
               newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
               newData.push(response.data[i].amount);
-            }
+            //}
           }
           
           newCategories.reverse();
