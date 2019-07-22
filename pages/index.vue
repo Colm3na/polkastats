@@ -124,7 +124,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane fade show active" id="favorites" role="tabpanel" aria-labelledby="nav-favorites">
+          <div class="tab-pane fade show" id="favorites" role="tabpanel" aria-labelledby="nav-favorites">
             <template v-if="favorites.length == 0">
               <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
                 <strong>Hi there!</strong> You can click in the star icon <i class="fas fa-star" style="color: #e6dfdf;"></i> of a validator to track it on this tab.
@@ -328,6 +328,7 @@ export default {
                 }
               }
               vm.validators = vm.validatorsTmp;
+              console.log(vm.validators);
             })          
         })
     },
