@@ -12,15 +12,15 @@
           <div class="tab-pane fade show active" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
             <div class="validator card mb-3" v-for="(validator, index) in validators">
               <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
-                <p class="text-right">
+                <p class="text-right mb-0">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
                     <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
                   </a>
-                  <nuxt-link class="detail" :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator Graphs (Beta)">
+                  <nuxt-link class="detail" :to="{name: 'validator', query: { accountId: validator.accountId } }" title="View validator details / graphs">
                     <i class="fas fa-chart-line"></i>
                   </nuxt-link>
-                </a>
+                </p>
                 <div class="row">
                   <div class="col-md-3 text-center">
                     <p class="display-1 mb-0 rank">{{ index+1 }}</p>
@@ -69,7 +69,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-2">
                       <div class="col-md-3 mb-2">
                         <strong>Stash</strong>
                       </div>
@@ -95,23 +95,25 @@
                         {{ validator.validatorPrefs.unstakeThreshold}}
                       </div>
                     </div>
-                    <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                      <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
-                    </a>
-                    <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
-                      <div v-for="staker in validator.stakers.others" class="row">
-                        <div class="col-8 who">                      
-                          <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                            <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
-                            <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ staker.who }}</span>                        
-                          </a>
-                        </div>
-                        <div class="col-4 text-right value">
-                          {{ formatDot(staker.value) }} DOT
+                    <template v-if="validator.stakers.others.length > 0">
+                      <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
+                        <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+                      </a>
+                      <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
+                        <div v-for="staker in validator.stakers.others" class="row">
+                          <div class="col-8 who">                      
+                            <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
+                              <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
+                              <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ staker.who }}</span>                        
+                            </a>
+                          </div>
+                          <div class="col-4 text-right value">
+                            {{ formatDot(staker.value) }} DOT
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div v-if="validator.offline.length > 0">
+                    </template>
+                    <template v-if="validator.offline.length > 0">
                       <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
                         <h6 class="h6 offline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
                       </a>
@@ -122,7 +124,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -140,11 +142,16 @@
             <template  v-for="(validator, index) in validators">
               <template v-if="isFavorite(validator.accountId)">
                 <div class="validator card mb-3">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
+                <p class="text-right mb-0">
+                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
                     <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
                   </a>
-                  <nuxt-link class="detail" :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator Graphs (Beta)">
+                  <nuxt-link class="detail" :to="{name: 'validator', query: { accountId: validator.accountId } }" title="View validator details / graphs">
+                    <i class="fas fa-chart-line"></i>
+                  </nuxt-link>
+                </p>
+                  <nuxt-link class="detail" :to="{name: 'validator', query: { accountId: validator.accountId } }" title="View validator details / graphs">
                     <i class="fas fa-chart-line"></i>
                   </nuxt-link>                  
                   <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
@@ -197,7 +204,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-2">
                           <div class="col-md-3 mb-2">
                             <strong>Stash</strong>
                           </div>
@@ -223,23 +230,25 @@
                             {{ validator.validatorPrefs.unstakeThreshold}}
                           </div>
                         </div>
-                        <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                          <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
-                        </a>
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
-                          <div v-for="staker in validator.stakers.others" class="row">
-                            <div class="col-8 who">                      
-                              <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                                <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
-                                <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ staker.who }}</span>                        
-                              </a>
-                            </div>
-                            <div class="col-4 text-right value">
-                              {{ formatDot(staker.value) }} DOT
+                        <template v-if="validator.stakers.others.length > 0">
+                          <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
+                            <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+                          </a>
+                          <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
+                            <div v-for="staker in validator.stakers.others" class="row">
+                              <div class="col-8 who">                      
+                                <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
+                                  <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
+                                  <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ staker.who }}</span>                        
+                                </a>
+                              </div>
+                              <div class="col-4 text-right value">
+                                {{ formatDot(staker.value) }} DOT
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div v-if="validator.offline.length > 0">
+                        </template>
+                        <template v-if="validator.offline.length > 0">
                           <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
                             <h6 class="h6 offline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
                           </a>
@@ -250,7 +259,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </template>
                       </div>
                     </div>
                   </div>
