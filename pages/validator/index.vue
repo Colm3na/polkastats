@@ -13,7 +13,9 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <div style="margin-top: -1rem; margin-bottom: 0.5rem;"><jdenticon :address="validator.accountId" :size="80" /></div>
+                <div style="margin-top: -1rem; margin-bottom: 0.5rem;">
+                  <jdenticon :address="validator.accountId" :size="80" />
+                </div>
                 <h4 class="mb-1">Validator <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
