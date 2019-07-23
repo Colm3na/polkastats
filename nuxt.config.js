@@ -9,7 +9,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Active Polkadot validators in Alexander testnet' }
+      { hid: 'description', name: 'description', content: 'Polkadot network statistics' }
     ],
     link: [
       { rel: 'icon', type: 'image/png', href: '/img/favicon.png' }
