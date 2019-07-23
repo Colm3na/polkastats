@@ -36,9 +36,10 @@
                         </div>
                         <div class="col-md-9 mb-2">
                           <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                            <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
-                            <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ validator.controllerId }}</span>
+                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
+                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
                           </a>
+                          <a v-clipboard:copy="validator.controllerId" v-on:click="makeToast('Address ' + validator.controllerId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                         </div>
                       </div>
                       <div class="row">
@@ -47,9 +48,10 @@
                         </div>
                         <div class="col-md-9 mb-2">                 
                           <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
-                            <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
-                            <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ validator.nextSessionId }}</span>     
+                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
+                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>     
                           </a>
+                          <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                         </div>
                       </div>
                     </div>
@@ -60,9 +62,10 @@
                         </div>
                         <div class="col-md-9 mb-2">
                           <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
-                            <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
-                            <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ validator.nextSessionId }}</span>
+                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
+                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>
                           </a>
+                          <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                         </div>
                       </div>
                     </div>
@@ -72,9 +75,10 @@
                       </div>
                       <div class="col-md-9 mb-2">
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
-                          <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
-                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ validator.stashId }}</span>
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
                         </a>
+                        <a v-clipboard:copy="validator.stashId" v-on:click="makeToast('Address ' + validator.stashId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                       </div>
                     </div>
                     <div class="row mb-3">
@@ -160,9 +164,10 @@
                             </div>
                             <div class="col-md-9 mb-2">
                               <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                                <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
-                                <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ validator.controllerId }}</span>
+                                <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
+                                <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
                               </a>
+                              <a v-clipboard:copy="validator.controllerId" v-on:click="makeToast('Address ' + validator.controllerId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                             </div>
                           </div>
                           <div class="row">
@@ -171,9 +176,10 @@
                             </div>
                             <div class="col-md-9 mb-2">                 
                               <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
-                                <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
-                                <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ validator.nextSessionId }}</span>     
+                                <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
+                                <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>     
                               </a>
+                              <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                             </div>
                           </div>
                         </div>
@@ -184,9 +190,10 @@
                             </div>
                             <div class="col-md-9 mb-2">
                               <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
-                                <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
-                                <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ validator.nextSessionId }}</span>
+                                <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
+                                <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>
                               </a>
+                              <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                             </div>
                           </div>
                         </div>
@@ -196,9 +203,10 @@
                           </div>
                           <div class="col-md-9 mb-2">
                             <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
-                              <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
-                              <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ validator.stashId }}</span>
+                              <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
+                              <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
                             </a>
+                            <a v-clipboard:copy="validator.stashId" v-on:click="makeToast('Address ' + validator.stashId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                           </div>
                         </div>
                         <div class="row mb-3">
