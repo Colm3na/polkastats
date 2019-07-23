@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4 pb-5">
+      <b-container class="main pt-3 pb-5">
         <template v-for="(validator, index) in validators">
           <template v-if="validator.accountId == accountId">
             <div class="row">
@@ -12,8 +12,9 @@
                   </a>
                 </template>
               </div>
-              <div class="col-8  col-lg-10">
-                <h3 class="text-center mb-1">Validator <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h3>
+              <div class="col-8 col-lg-10 text-center">
+                <div style="margin-top: -1rem; margin-bottom: 0.5rem;"><jdenticon :address="validator.accountId" :size="80" /></div>
+                <h4 class="mb-1">Validator <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
@@ -149,6 +150,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
+import jdenticon from "../../components/jdenticon.vue";
 export default {
   head () {
     return {
@@ -418,7 +420,8 @@ export default {
     }    
   },
   components: {
-    apexchart: VueApexCharts
+    apexchart: VueApexCharts,
+    jdenticon
   }
 }
 </script>
