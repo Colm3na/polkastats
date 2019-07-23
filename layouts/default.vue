@@ -30,6 +30,7 @@
         </div>  
         <div class="row mt-4">
           <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+            <p>Connected to chain {{system.chain}} using node {{ system.nodeName}} version {{system.nodeVersion}}</p>
             <p>Built with <a href="https://basicattentiontoken.org/" target="_blank"><img src="/img/brave/logotype-light.png" class="img-fluid bat" /></a></p>
             <p>&nbsp;</p>
             <p style="font-size: 0.95rem;">Made with <i class="far fa-heart"></i> by <a href="https://mariopino.es" title="Mario Pino">Mario Pino</a> en <a target="_blank" href="https://www.coworkingcolmena.com/" title="La Colmena">La Colmena</a><span class="mx-2">|</span> <a href="https://github.com/Colm3na/polkastats" aria-label="View source on GitHub" title="View source code on GitHub" target="_blank"><i class="fab fa-github"></i> View source code on GitHub</a></p>
@@ -42,7 +43,29 @@
   </div>
 </template>
 <script>
-export default {} 
+export default {
+  data: function() {
+    return {
+      system: {
+        chain: "Alexander",
+        nodeName: "parity-polkadot",
+        nodeVersion: "0.4.4"
+      }
+    }
+  },
+  mounted: function () {
+    this.getSystemData();
+  },
+  methods: {
+    getSystemData: function () {
+      var vm = this;
+      axios.get('https://polkastats.io:8443/system')
+        .then(function (response) {
+          vm.system = response.data;
+        })
+    }
+  }
+} 
 </script>
 <style>
 @import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
