@@ -11,7 +11,7 @@
         <div class="tab-content mb-2" id="nav-tabContent">
           <div class="tab-pane fade show active" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
             <div class="validator card mb-3" v-for="(validator, index) in validators">
-              <div class="card-body" v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
+              <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                 <p class="text-right">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
@@ -147,7 +147,7 @@
                   <nuxt-link class="detail" :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator Graphs (Beta)">
                     <i class="fas fa-chart-line"></i>
                   </nuxt-link>                  
-                  <div class="card-body" v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
+                  <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                     <div class="row">
                       <div class="col-md-3 text-center">
                         <p class="display-1 mb-0 rank">{{ index+1 }}</p>
