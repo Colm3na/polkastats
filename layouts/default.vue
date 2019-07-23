@@ -47,13 +47,13 @@ export default {
   data: function() {
     return {
       system: {
-        chain: "Alexander",
-        nodeName: "parity-polkadot",
-        nodeVersion: "0.4.4"
+        chain: "",
+        nodeName: "",
+        nodeVersion: ""
       }
     }
   },
-  mounted: function () {
+  created: function () {
     this.getSystemData();
   },
   methods: {
