@@ -21,19 +21,11 @@
     </section>
     <nuxt />
     <section id="footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 mt-5">
-            <p class="text-center">&nbsp;</p></ul> 
-          </div>
-          </hr>
-        </div>  
-        <div class="row mt-4">
+      <div class="container"> 
+        <div class="row mt-4 pt-5">
           <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-            <p>Connected to chain {{system.chain}} using node {{ system.nodeName}} version {{system.nodeVersion}}</p>
-            <p>Built with <a href="https://basicattentiontoken.org/" target="_blank"><img src="/img/brave/logotype-light.png" class="img-fluid bat" /></a></p>
-            <p>&nbsp;</p>
-            <p style="font-size: 0.95rem;">Made with <i class="far fa-heart"></i> by <a href="https://mariopino.es" title="Mario Pino">Mario Pino</a> en <a target="_blank" href="https://www.coworkingcolmena.com/" title="La Colmena">La Colmena</a><span class="mx-2">|</span> <a href="https://github.com/Colm3na/polkastats" aria-label="View source on GitHub" title="View source code on GitHub" target="_blank"><i class="fab fa-github"></i> View source code on GitHub</a></p>
+            <p class="system mb-5">Connected to chain {{system.chain}} using {{ system.nodeName}} version {{system.nodeVersion}}</p>
+            <p style="font-size: 0.95rem;">Made with <i class="far fa-heart"></i> by <a href="https://mariopino.es" title="Mario Pino">Mario Pino</a> en <a target="_blank" href="https://www.coworkingcolmena.com/" title="La Colmena">La Colmena</a> <span class="mx-2">|</span> Built with <a href="https://basicattentiontoken.org/" target="_blank"><img src="/img/brave/logo-full-color.png" class="img-fluid bat" /></a> <span class="mx-2">|</span> <a href="https://github.com/Colm3na/polkastats" aria-label="View source on GitHub" title="View source code on GitHub" target="_blank"><i class="fab fa-github"></i> View source code on GitHub</a></p>
           </div>
           </hr>
         </div>  
@@ -43,6 +35,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   data: function() {
     return {
@@ -277,8 +270,8 @@ section .section-title {
   font-weight: 700;
 }
 .bat {
-  max-width: 190px;
-  vertical-align: sub;
+  max-width: 30px;
+  vertical-align: bottom;
   margin-left: .5rem;
 }
 
@@ -348,5 +341,10 @@ section .section-title {
 }
 .toast-body {
   word-break: break-word;
+}
+.system {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.2;
 }
 </style>
