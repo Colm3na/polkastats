@@ -300,10 +300,10 @@ export default {
   methods: {
     getValidatorStats: function () {
       var vm = this;
-      axios.get('https://polkadot-node.mariopino.es/validators')
+      axios.get('https://polkastats.io:8443/validators')
         .then(function (response) {
           vm.validatorsTmp = response.data;
-          axios.get('https://polkadot-node.mariopino.es/offline')
+          axios.get('https://polkastats.io:8443/offline')
             .then(function (response) {
               //console.log('Getting offline events ...');
               for (let i = 0; i < vm.validatorsTmp.length; i++) {
