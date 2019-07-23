@@ -40,7 +40,11 @@ export default {
     // https://www.npmjs.com/package/nuxt-clipboard2
     'nuxt-clipboard2',
     // https://www.npmjs.com/package/cookie-universal-nuxt
-    ['cookie-universal-nuxt', { alias: 'cookies' }]
+    ['cookie-universal-nuxt', { alias: 'cookies' }],
+    // https://github.com/nuxt-community/analytics-module
+    ['@nuxtjs/google-analytics', {
+      id: 'UA-144344973-1'
+    }]
   ],
   /*
   ** Axios module configuration
