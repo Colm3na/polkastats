@@ -89,7 +89,7 @@
                         <a v-clipboard:copy="validator.stashId" v-on:click="makeToast('Address ' + validator.stashId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                       </div>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row">
                       <div class="col-md-3 mb-2">
                         <strong>Comission</strong>
                       </div>
