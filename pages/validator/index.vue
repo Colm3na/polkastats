@@ -26,8 +26,8 @@
             <div class="validator-detail card mt-4 mb-3">
               <div class="card-body" v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                 <p class="text-right">
-                  <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" title="Favorite"></i>
-                  <i v-else class="favorite fas fa-star" style="color: #e6dfdf;"></i>
+                  <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" title="In Favorites"></i>
+                  <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" title="Not in Favorites"></i>
                 </a>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
@@ -141,13 +141,16 @@
             </div>
           </template>
         </template>
-        <div class="mt-5 mb-5" id="stake-evolution-daily-chart">
+        <div class="mt-5 text-center" id="stake-evolution-daily-chart">
+          <h3>Total bonded - Daily chart <span class="text-success ml-3" v-if="daily.last - daily.first > 0">+{{ formatDot(daily.last - daily.first) }} DOT</span><span class="text-danger ml-3" v-if="daily.last - daily.first < 0">{{ formatDot(daily.last - daily.first) }} DOT</span></h3>
           <apexchart type=line height=350 :options="StakeEvolutionDailyChartOptions" :series="StakeEvolutionDailySeries" />
         </div>
-        <div class="mb-5" id="stake-evolution-weekly-chart">
+        <div class="mt-5 mb-5 text-center" id="stake-evolution-weekly-chart">
+          <h3>Total bonded - Weekly chart <span class="text-success ml-3" v-if="weekly.last - weekly.first > 0">+{{ formatDot(weekly.last - weekly.first) }} DOT</span><span class="text-danger ml-3" v-if="weekly.last - weekly.first < 0">{{ formatDot(weekly.last - weekly.first) }} DOT</span></h3>
           <apexchart type=line height=350 :options="StakeEvolutionWeeklyChartOptions" :series="StakeEvolutionWeeklySeries" />
         </div>
-        <div class="mb-5" id="stake-evolution-monthly-chart">
+        <div class="mb-5 text-center" id="stake-evolution-monthly-chart">
+          <h3>Total bonded - Monthly chart <span class="text-success ml-3" v-if="monthly.last - monthly.first > 0">+{{ formatDot(monthly.last - monthly.first) }} DOT</span><span class="text-danger ml-3" v-if="monthly.last - monthly.first < 0">{{ formatDot(monthly.last - monthly.first) }} DOT</span></h3>
           <apexchart type=line height=350 :options="StakeEvolutionMonthlyChartOptions" :series="StakeEvolutionMonthlySeries" />
         </div>
       </b-container>
@@ -179,6 +182,18 @@ export default {
       polling: null,
       graphPolling: null,
       favorites: [],
+      daily:{
+        last: 0,
+        first: 0
+      },
+      weekly:{
+        last: 0,
+        first: 0
+      },
+      monthly:{
+        last: 0,
+        first: 0
+      },
       StakeEvolutionDailySeries: [{
           name: "Total bonded (DOT)",
           data: []
@@ -205,15 +220,6 @@ export default {
         stroke: {
           curve: 'straight'
         },
-        title: {
-          text: 'Total bonded daily graph',
-          align: 'center',
-          margin: 10,
-          style: {
-            fontSize: '1.75rem'
-          },
-          offsetY: 20,
-        },
         markers: {
           size: 6
         },
@@ -240,10 +246,6 @@ export default {
           }
         },
         yaxis: {
-          /*
-          min: 0,
-          max: 0,
-          */
           title: {
             text: 'Total bonded (DOT)'
           },
@@ -268,15 +270,6 @@ export default {
         stroke: {
           curve: 'straight'
         },
-        title: {
-          text: 'Total bonded weekly graph',
-          align: 'center',
-          margin: 10,
-          style: {
-            fontSize: '1.75rem'
-          },
-          offsetY: 20,
-        },
         markers: {
           size: 6
         },
@@ -303,10 +296,6 @@ export default {
           }
         },
         yaxis: {
-          /*
-          min: 0,
-          max: 0,
-          */
           title: {
             text: 'Total bonded (DOT)'
           },
@@ -331,15 +320,6 @@ export default {
         stroke: {
           curve: 'straight'
         },
-        title: {
-          text: 'Total bonded monthly graph',
-          align: 'center',
-          margin: 10,
-          style: {
-            fontSize: '1.75rem'
-          },
-          offsetY: 20,
-        },
         markers: {
           size: 6
         },
@@ -366,10 +346,6 @@ export default {
           }
         },
         yaxis: {
-          /*
-          min: 0,
-          max: 0,
-          */
           title: {
             text: 'Total bonded (DOT)'
           },
@@ -437,6 +413,11 @@ export default {
           for (var i = 0; i < response.data.length; i++) {
             // Insert firt point, last point and points with different values
             if (i == 0 || (i == response.data.length -1 ) || (i > 0 && response.data[i].amount != response.data[i-1].amount)) {
+
+              // Save first and last point
+              if (i == 0) vm.daily.last = response.data[i].amount;
+              if (i == response.data.length -1) vm.daily.first = response.data[i].amount;
+
               newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
               newData.push(response.data[i].amount);
             }
@@ -497,6 +478,10 @@ export default {
           //console.log(response.data);
 
           for (var i = 0; i < response.data.length; i++) {
+            // Save first and last point
+            if (i == 0) vm.weekly.last = response.data[i].amount;
+            if (i == response.data.length -1) vm.weekly.first = response.data[i].amount;
+
             newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
             newData.push(response.data[i].amount);
           }
@@ -556,6 +541,10 @@ export default {
           //console.log(response.data);
 
           for (var i = 0; i < response.data.length; i++) {
+            // Save first and last point
+            if (i == 0) vm.monthly.last = response.data[i].amount;
+            if (i == response.data.length -1) vm.monthly.first = response.data[i].amount;
+
             newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
             newData.push(response.data[i].amount);
           }
@@ -609,9 +598,9 @@ export default {
     },
     formatDot(amount) {
       if (this.isHex(amount)) {
-        return (parseInt(amount, 16) / 1000000000000000).toFixed(3)
+        return (parseInt(amount, 16) / 1000000000000000).toFixed(6)
       } else {
-        return (amount / 1000000000000000).toFixed(3)
+        return (amount / 1000000000000000).toFixed(6)
       }
     },
     shortAddess(address) {
@@ -691,11 +680,14 @@ export default {
   font-size: 1.4rem;
   color: #7d7378;
 }
-.favorite {
+.validator-detail .favorite {
   cursor: initial;
 }
 .validator-detail .identicon {
   margin-top: 0.2rem;
   margin-bottom: 0.4rem;
+}
+.change {
+  font-size: 1.4rem;
 }
 </style>
