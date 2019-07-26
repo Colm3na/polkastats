@@ -141,8 +141,14 @@
             </div>
           </template>
         </template>
-        <div class="mt-4" id="stake-evolution-chart">
-          <apexchart type=line height=350 :options="StakeEvolutionChartOptions" :series="StakeEvolutionSeries" />
+        <div class="mt-5 mb-5" id="stake-evolution-daily-chart">
+          <apexchart type=line height=350 :options="StakeEvolutionDailyChartOptions" :series="StakeEvolutionDailySeries" />
+        </div>
+        <div class="mb-5" id="stake-evolution-weekly-chart">
+          <apexchart type=line height=350 :options="StakeEvolutionWeeklyChartOptions" :series="StakeEvolutionWeeklySeries" />
+        </div>
+        <div class="mb-5" id="stake-evolution-monthly-chart">
+          <apexchart type=line height=350 :options="StakeEvolutionMonthlyChartOptions" :series="StakeEvolutionMonthlySeries" />
         </div>
       </b-container>
     </section>
@@ -173,11 +179,19 @@ export default {
       polling: null,
       graphPolling: null,
       favorites: [],
-      StakeEvolutionSeries: [{
+      StakeEvolutionDailySeries: [{
           name: "Total bonded (DOT)",
           data: []
       }],
-      StakeEvolutionChartOptions: {
+       StakeEvolutionWeeklySeries: [{
+          name: "Total bonded (DOT)",
+          data: []
+      }],
+       StakeEvolutionMonthlySeries: [{
+          name: "Total bonded (DOT)",
+          data: []
+      }],
+      StakeEvolutionDailyChartOptions: {
         chart: {
           height: 500,
           stacked: false,
@@ -192,7 +206,133 @@ export default {
           curve: 'straight'
         },
         title: {
-          text: 'Total bonded graph (24h)',
+          text: 'Total bonded daily graph',
+          align: 'center',
+          margin: 10,
+          style: {
+            fontSize: '1.75rem'
+          },
+          offsetY: 20,
+        },
+        markers: {
+          size: 6
+        },
+        colors: ['#d75ea1'],
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: [],
+          type: 'datetime',
+          title: {
+            text: 'Date / time (UTC)'
+          },          
+          labels: {
+            formatter: function (val) {
+              return moment.unix(val).format('MM/DD/YYYY HH:mm');
+            }
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        yaxis: {
+          /*
+          min: 0,
+          max: 0,
+          */
+          title: {
+            text: 'Total bonded (DOT)'
+          },
+          labels: {
+            formatter: function (val) {
+              return val;
+            }
+          }       
+        }
+      },
+      StakeEvolutionWeeklyChartOptions: {
+        chart: {
+          height: 500,
+          stacked: false,
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Total bonded weekly graph',
+          align: 'center',
+          margin: 10,
+          style: {
+            fontSize: '1.75rem'
+          },
+          offsetY: 20,
+        },
+        markers: {
+          size: 6
+        },
+        colors: ['#d75ea1'],
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: [],
+          type: 'datetime',
+          title: {
+            text: 'Date / time (UTC)'
+          },          
+          labels: {
+            formatter: function (val) {
+              return moment.unix(val).format('MM/DD/YYYY HH:mm');
+            }
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        yaxis: {
+          /*
+          min: 0,
+          max: 0,
+          */
+          title: {
+            text: 'Total bonded (DOT)'
+          },
+          labels: {
+            formatter: function (val) {
+              return val;
+            }
+          }       
+        }
+      },
+      StakeEvolutionMonthlyChartOptions: {
+        chart: {
+          height: 500,
+          stacked: false,
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Total bonded monthly graph',
           align: 'center',
           margin: 10,
           style: {
@@ -257,6 +397,8 @@ export default {
 
     // Load graph data first time
     this.getValidatorDailyGraphData();
+    this.getValidatorWeeklyGraphData();
+    this.getValidatorMonthlyGraphData();
 
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length == 0) {
@@ -270,7 +412,9 @@ export default {
     
     // Refresh graph data every minute
     this.graphPolling = setInterval(() => {
-      this.getValidatorDailyGraphData()
+      this.getValidatorDailyGraphData();
+      this.getValidatorWeeklyGraphData();
+      this.getValidatorMonthlyGraphData();
     }, 60000);
     
   },
@@ -302,8 +446,8 @@ export default {
           newData.reverse();
           
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          vm.StakeEvolutionChartOptions = {
-            ...vm.StakeEvolutionChartOptions,
+          vm.StakeEvolutionDailyChartOptions = {
+            ...vm.StakeEvolutionDailyChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -335,7 +479,125 @@ export default {
           };
           
           // In the same way, update the series option
-          vm.StakeEvolutionSeries = [{
+          vm.StakeEvolutionDailySeries = [{
+            data: newData
+          }];
+          
+        })
+    },
+    getValidatorWeeklyGraphData: function () {
+      var vm = this;
+      axios.get('https://polkastats.io:8443/validator/graph/weekly/' + this.accountId)
+        .then(function (response) {
+
+          // Update chart data
+          var newCategories = [];
+          var newData = [];
+      
+          //console.log(response.data);
+
+          for (var i = 0; i < response.data.length; i++) {
+            newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
+            newData.push(response.data[i].amount);
+          }
+          
+          newCategories.reverse();
+          newData.reverse();
+          
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          vm.StakeEvolutionWeeklyChartOptions = {
+            ...vm.StakeEvolutionWeeklyChartOptions,
+            ...{
+              xaxis: {
+                categories: newCategories,
+                type: 'datetime',
+                title: {
+                  text: 'Date time (UTC)'
+                },        
+                labels: {
+                  formatter: function (val) {
+                    return moment.unix(val/1000).format('MM/DD/YYYY HH:mm');
+                  }
+                }
+              },
+              yaxis: {
+                /*
+                min: 0,
+                max: 0,
+                */
+                title: {
+                  text: 'Total bonded (DOT)'
+                },
+                labels: {
+                  formatter: function (val) {
+                    return (val / 1000000000000000).toFixed(6);
+                  }
+                }         
+              }
+            }
+          };
+          
+          // In the same way, update the series option
+          vm.StakeEvolutionWeeklySeries = [{
+            data: newData
+          }];
+          
+        })
+    },
+    getValidatorMonthlyGraphData: function () {
+      var vm = this;
+      axios.get('https://polkastats.io:8443/validator/graph/monthly/' + this.accountId)
+        .then(function (response) {
+
+          // Update chart data
+          var newCategories = [];
+          var newData = [];
+      
+          //console.log(response.data);
+
+          for (var i = 0; i < response.data.length; i++) {
+            newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
+            newData.push(response.data[i].amount);
+          }
+          
+          newCategories.reverse();
+          newData.reverse();
+          
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          vm.StakeEvolutionMonthlyChartOptions = {
+            ...vm.StakeEvolutionMonthlyChartOptions,
+            ...{
+              xaxis: {
+                categories: newCategories,
+                type: 'datetime',
+                title: {
+                  text: 'Date time (UTC)'
+                },        
+                labels: {
+                  formatter: function (val) {
+                    return moment.unix(val/1000).format('MM/DD/YYYY HH:mm');
+                  }
+                }
+              },
+              yaxis: {
+                /*
+                min: 0,
+                max: 0,
+                */
+                title: {
+                  text: 'Total bonded (DOT)'
+                },
+                labels: {
+                  formatter: function (val) {
+                    return (val / 1000000000000000).toFixed(6);
+                  }
+                }         
+              }
+            }
+          };
+          
+          // In the same way, update the series option
+          vm.StakeEvolutionMonthlySeries = [{
             data: newData
           }];
           
@@ -400,11 +662,15 @@ export default {
 
       // Update graph data
       this.getValidatorDailyGraphData();
+      this.getValidatorWeeklyGraphData();
+      this.getValidatorMonthlyGraphData();
       
       // Restart graph data polling
       clearInterval(this.graphPolling);
       this.graphPolling = setInterval(() => {
-        this.getValidatorDailyGraphData()
+        this.getValidatorDailyGraphData();
+        this.getValidatorWeeklyGraphData();
+        this.getValidatorMonthlyGraphData();
       }, 60000);
     }
   },
