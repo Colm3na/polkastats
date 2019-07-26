@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="mt-2" v-on:click="editing=true" v-show="!editing">
+    <h5 class="mt-1" v-on:click="editing=true" v-show="!editing" v-b-tooltip.hover title="Click to edit name" >
       {{value}}<span v-if="value.length == 0">Edit validator name...</span>
     </h5>
     <span v-show="editing">
@@ -8,7 +8,9 @@
         @input="$emit('input', $event.target.value)"
         @keydown.enter="updateFavoritesCookie()"
         type="text" 
-        class="form-control mt-2"
+        class="form-control mt-1"
+        v-b-tooltip.hover 
+        title="Press Enter key to save" 
       >
     </span>
   </div>
@@ -34,4 +36,7 @@ export default {
 }
 </script>
 <style>
+h5 {
+  cursor: pointer;
+}
 </style>

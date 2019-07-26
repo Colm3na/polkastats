@@ -162,6 +162,7 @@
                         <p class="mb-0 rank">rank #{{ index+1 }}</p>
                         <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
                         <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
+                        <editable v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
                       </div>
                       <div class="col-md-9">
                         <h5 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1"><a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">{{ validator.accountId }}</a> <a v-clipboard:copy="validator.accountId" v-on:click="makeToast('Address ' + validator.accountId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a></h5>
