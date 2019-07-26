@@ -142,15 +142,15 @@
           </template>
         </template>
         <div class="mt-5 text-center" id="stake-evolution-daily-chart">
-          <h3>Total bonded - Daily chart <span class="text-success ml-3" v-if="daily.last - daily.first > 0">+{{ formatDot(daily.last - daily.first) }} DOT</span><span class="text-danger ml-3" v-if="daily.last - daily.first < 0">{{ formatDot(daily.last - daily.first) }} DOT</span></h3>
+          <h3>Total bonded - Daily chart <span class="text-success ml-3" v-if="daily.last - daily.first > 0">+{{ formatDot6Dec(daily.last - daily.first) }} DOT</span><span class="text-danger ml-3" v-if="daily.last - daily.first < 0">{{ formatDot6Dec(daily.last - daily.first) }} DOT</span></h3>
           <apexchart type=line height=350 :options="StakeEvolutionDailyChartOptions" :series="StakeEvolutionDailySeries" />
         </div>
         <div class="mt-5 mb-5 text-center" id="stake-evolution-weekly-chart">
-          <h3>Total bonded - Weekly chart <span class="text-success ml-3" v-if="weekly.last - weekly.first > 0">+{{ formatDot(weekly.last - weekly.first) }} DOT</span><span class="text-danger ml-3" v-if="weekly.last - weekly.first < 0">{{ formatDot(weekly.last - weekly.first) }} DOT</span></h3>
+          <h3>Total bonded - Weekly chart <span class="text-success ml-3" v-if="weekly.last - weekly.first > 0">+{{ formatDot6Dec(weekly.last - weekly.first) }} DOT</span><span class="text-danger ml-3" v-if="weekly.last - weekly.first < 0">{{ formatDot6Dec(weekly.last - weekly.first) }} DOT</span></h3>
           <apexchart type=line height=350 :options="StakeEvolutionWeeklyChartOptions" :series="StakeEvolutionWeeklySeries" />
         </div>
         <div class="mb-5 text-center" id="stake-evolution-monthly-chart">
-          <h3>Total bonded - Monthly chart <span class="text-success ml-3" v-if="monthly.last - monthly.first > 0">+{{ formatDot(monthly.last - monthly.first) }} DOT</span><span class="text-danger ml-3" v-if="monthly.last - monthly.first < 0">{{ formatDot(monthly.last - monthly.first) }} DOT</span></h3>
+          <h3>Total bonded - Monthly chart <span class="text-success ml-3" v-if="monthly.last - monthly.first > 0">+{{ formatDot6Dec(monthly.last - monthly.first) }} DOT</span><span class="text-danger ml-3" v-if="monthly.last - monthly.first < 0">{{ formatDot6Dec(monthly.last - monthly.first) }} DOT</span></h3>
           <apexchart type=line height=350 :options="StakeEvolutionMonthlyChartOptions" :series="StakeEvolutionMonthlySeries" />
         </div>
       </b-container>
@@ -597,6 +597,13 @@ export default {
       return (a.toString(16) === n)
     },
     formatDot(amount) {
+      if (this.isHex(amount)) {
+        return (parseInt(amount, 16) / 1000000000000000).toFixed(3)
+      } else {
+        return (amount / 1000000000000000).toFixed(3)
+      }
+    },
+    formatDot6Dec(amount) {
       if (this.isHex(amount)) {
         return (parseInt(amount, 16) / 1000000000000000).toFixed(6)
       } else {
