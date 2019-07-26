@@ -7,9 +7,11 @@
             <div class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <a v-bind:href="'/validator?accountId=' + validators[index-1].accountId" title="Previous validator">
+                  <!-- <a v-bind:href="'/validator?accountId=' + validators[index-1].accountId" title="Previous validator"> -->
+                  <nuxt-link :to="{name: 'validator', query: { accountId: validators[index-1].accountId } }">
                     <i class="fas fa-2x fa-chevron-left"></i>
-                  </a>
+                  </nuxt-link>
+                  <!-- </a> -->
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
@@ -20,9 +22,11 @@
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
-                  <a v-bind:href="'/validator?accountId=' + validators[index+1].accountId" title="Next validator">
+                  <!-- <a v-bind:href="'/validator?accountId=' + validators[index+1].accountId" title="Next validator"> -->
+                  <nuxt-link :to="{name: 'validator', query: { accountId: validators[index+1].accountId } }">
                     <i class="fas fa-2x fa-chevron-right"></i>
-                  </a>
+                  </nuxt-link>  
+                  <!-- </a> -->
                 </template>
               </div>
             </div>
@@ -149,6 +153,7 @@
   </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 import axios from 'axios';
 import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
@@ -165,23 +170,12 @@ export default {
   data: function() {
     return {
       accountId: this.$route.query.accountId,
-      items: [
-        {
-          text: 'Validators',
-          href: '/'
-        },
-        {
-          text: this.$route.query.accountId,
-          active: true
-        }
-      ],
       blockExplorer: {
         block: 'https://polkascan.io/pre/alexander/block/',
         account: 'https://polkascan.io/pre/alexander/account/'
       },
-      validatorsTmp: [],
-      validators: [],
-      offline: [],
+      polling: null,
+      graphPolling: null,
       favorites: [],
       StakeEvolutionSeries: [{
           name: "Total bonded (DOT)",
@@ -252,26 +246,41 @@ export default {
       }
     }
   },
+  computed: {
+    validators () {
+      return this.$store.state.validators.list
+    }
+  },
   created: function () {
+    var vm = this;
 
+    // Get favorites from cookie
     if (this.$cookies.get('favorites')) {
       this.favorites = this.$cookies.get('favorites');
     }
 
-    /* First time */
+    // Load graph data first time
     this.getValidatorDailyGraphData();
-    this.getValidatorStats();
+
+    // Force update of validators list if empty
+    if (this.$store.state.validators.list.length == 0) {
+      vm.$store.dispatch('validators/update');
+    }
+
+    // Update validators list every 10 seconds
+    this.polling = setInterval(() => {
+      vm.$store.dispatch('validators/update')
+    }, 10000);
     
-    /* Refresh data every 1 minute */
-    this.timer = setInterval(() => {
+    // Refresh graph data every minute
+    this.graphPolling = setInterval(() => {
       this.getValidatorDailyGraphData()
     }, 60000);
-
-    /* Refresh data every 1 minute */
-    this.timer = setInterval(() => {
-      this.getValidatorStats()
-    }, 60000);
     
+  },
+  beforeDestroy: function () {
+    clearInterval(this.polling);
+    clearInterval(this.graphPolling);
   },
   methods: {
     getValidatorDailyGraphData: function () {
@@ -336,39 +345,6 @@ export default {
           
         })
     },
-    getValidatorStats: function () {
-      var vm = this;
-      axios.get('https://polkastats.io:8443/validators')
-        .then(function (response) {
-          vm.validatorsTmp = response.data;
-          axios.get('https://polkastats.io:8443/offline')
-            .then(function (response) {
-              //console.log('Getting offline events ...');
-              for (let i = 0; i < vm.validatorsTmp.length; i++) {
-                var tmp = []
-                for (let j = 0; j < response.data.length; j++) {
-                  if (vm.validatorsTmp[i].stashId == response.data[j][0]) {
-                    //console.log('Offline Event | addr: ' + vm.validatorsTmp[i].accountId + ' block: ' + response.data[j][1] + ' number: ' + response.data[j][2]);
-                    tmp.push(
-                      {
-                        block: response.data[j][1],
-                        number: response.data[j][2]
-                      }
-                    );
-                  }
-                }
-                vm.validatorsTmp[i].offline = tmp;
-                // Set isOffline to true if there is offlines reported
-                if (vm.validatorsTmp[i].offline.length > 0) {
-                  vm.validatorsTmp[i].isOffline = true; 
-                } else {
-                  vm.validatorsTmp[i].isOffline = false; 
-                }
-              }
-              vm.validators = vm.validatorsTmp;
-            })          
-        })
-    },
     isHex(n) {
       var a = parseInt(n,16);
       return (a.toString(16) === n)
@@ -420,6 +396,21 @@ export default {
         solid: solid
       })
     }    
+  },
+  watch: {
+    $route () {
+      //console.log('Route change!');
+      this.accountId = this.$route.query.accountId;
+
+      // Update graph data
+      this.getValidatorDailyGraphData();
+      
+      // Restart graph data polling
+      clearInterval(this.graphPolling);
+      this.graphPolling = setInterval(() => {
+        this.getValidatorDailyGraphData()
+      }, 60000);
+    }
   },
   components: {
     apexchart: VueApexCharts,

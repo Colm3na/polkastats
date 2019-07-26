@@ -275,7 +275,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import { mapMutations } from 'vuex'
 import bootstrap from 'bootstrap'
 import editable from "../components/editable.vue";
 export default {
@@ -293,61 +293,39 @@ export default {
         block: 'https://polkascan.io/pre/alexander/block/',
         account: 'https://polkascan.io/pre/alexander/account/'
       },
-      validatorsTmp: [],
-      validators: [],
-      offline: [],
-      favorites: []
+      favorites: [],
+      polling: null
+    }
+  },
+  computed: {
+    validators () {
+      return this.$store.state.validators.list
     }
   },
   created: function () {
-    
-    /* First time */
-    this.getValidatorStats();
+    var vm = this;
 
+    // Get favorites from cookie
     if (this.$cookies.get('favorites')) {
       this.favorites = this.$cookies.get('favorites');
     }
     
-    /* Refresh data every 20 seconds */
-    this.timer = setInterval(() => {
-      this.getValidatorStats();
-    }, 20000);
+    // Force update of validators list if empty
+    if (this.$store.state.validators.list.length == 0) {
+      vm.$store.dispatch('validators/update');
+    }
+
+    /* Update validators list every 10 seconds */
+    
+    this.polling = setInterval(() => {
+      vm.$store.dispatch('validators/update')
+    }, 10000);
 
   },
+  beforeDestroy: function () {
+	  clearInterval(this.polling);
+  },
   methods: {
-    getValidatorStats: function () {
-      var vm = this;
-      axios.get('https://polkastats.io:8443/validators')
-        .then(function (response) {
-          vm.validatorsTmp = response.data;
-          axios.get('https://polkastats.io:8443/offline')
-            .then(function (response) {
-              //console.log('Getting offline events ...');
-              for (let i = 0; i < vm.validatorsTmp.length; i++) {
-                var tmp = []
-                for (let j = 0; j < response.data.length; j++) {
-                  if (vm.validatorsTmp[i].stashId == response.data[j][0]) {
-                    //console.log('Offline Event | addr: ' + vm.validatorsTmp[i].accountId + ' block: ' + response.data[j][1] + ' number: ' + response.data[j][2]);
-                    tmp.push(
-                      {
-                        block: response.data[j][1],
-                        number: response.data[j][2]
-                      }
-                    );
-                  }
-                }
-                vm.validatorsTmp[i].offline = tmp;
-                // Set isOffline to true if there is offlines reported
-                if (vm.validatorsTmp[i].offline.length > 0) {
-                  vm.validatorsTmp[i].isOffline = true; 
-                } else {
-                  vm.validatorsTmp[i].isOffline = false; 
-                }
-              }
-              vm.validators = vm.validatorsTmp;
-            })          
-        })
-    },
     isHex(n) {
       var a = parseInt(n,16);
       return (a.toString(16) === n)
