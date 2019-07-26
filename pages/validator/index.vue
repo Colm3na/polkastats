@@ -687,6 +687,9 @@ export default {
   font-size: 1.4rem;
   color: #7d7378;
 }
+.validator-detail .bg-offline {
+  background-color: rgba(239, 57, 74, 0.12) !important;
+}
 .validator-detail .favorite {
   cursor: initial;
 }
