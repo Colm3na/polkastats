@@ -7,39 +7,33 @@
             <div class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <!-- <a v-bind:href="'/validator?accountId=' + validators[index-1].accountId" title="Previous validator"> -->
                   <nuxt-link :to="{name: 'validator', query: { accountId: validators[index-1].accountId } }">
                     <i class="fas fa-2x fa-chevron-left"></i>
                   </nuxt-link>
-                  <!-- </a> -->
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <div style="margin-top: -1rem; margin-bottom: 0.5rem;">
-                  <jdenticon :address="validator.accountId" :size="80" />
-                </div>
                 <h4 class="mb-1">Validator <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
-                  <!-- <a v-bind:href="'/validator?accountId=' + validators[index+1].accountId" title="Next validator"> -->
                   <nuxt-link :to="{name: 'validator', query: { accountId: validators[index+1].accountId } }">
                     <i class="fas fa-2x fa-chevron-right"></i>
                   </nuxt-link>  
-                  <!-- </a> -->
                 </template>
               </div>
             </div>
-            <div class="validator card mt-4 mb-3">
+            <div class="validator-detail card mt-4 mb-3">
               <div class="card-body" v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                 <p class="text-right">
                   <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" title="Favorite"></i>
                   <i v-else class="favorite fas fa-star" style="color: #e6dfdf;"></i>
                 </a>
                 <div class="row">
-                  <div class="col-md-3 text-center">
-                    <p class="display-1 mb-0 rank">{{ index+1 }}</p>
-                    <p class="bonded mb-1" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
+                  <div class="col-md-3 mb-2 text-center">
+                    <Identicon :address="validator.accountId" :size="80" :theme="'polkadot'" />
+                    <p class="mb-0 rank">rank #{{ index+1 }}</p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
                     <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
                   </div>
                   <div class="col-md-9">
@@ -103,7 +97,7 @@
                         {{ validator.validatorPrefs.validatorPayment / 100000000000000 }}%
                       </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                       <div class="col-md-3 mb-2">
                         <strong>Unstake threshold</strong>
                       </div>
@@ -111,9 +105,11 @@
                         {{ validator.validatorPrefs.unstakeThreshold}}
                       </div>
                     </div>
-                    <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                      <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
-                    </a>
+                    <template v-if="validator.stakers.others.length > 0">
+                      <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
+                        <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+                      </a>
+                    </template>
                     <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
                       <div v-for="staker in validator.stakers.others" class="row">
                         <div class="col-8 who">                      
@@ -157,7 +153,7 @@ import { mapMutations } from 'vuex'
 import axios from 'axios';
 import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
-import jdenticon from "../../components/jdenticon.vue";
+import Identicon from "../../components/identicon.vue";
 export default {
   head () {
     return {
@@ -414,11 +410,11 @@ export default {
   },
   components: {
     apexchart: VueApexCharts,
-    jdenticon
+    Identicon
   }
 }
 </script>
-<style scoped>
+<style>
 .fas.fa-copy {
   cursor: pointer;
   color: #d75ea1;
@@ -426,9 +422,14 @@ export default {
   margin-left: 0.1rem;
 }
 .rank {
-  margin-top: -0.6rem
+  font-size: 1.4rem;
+  color: #7d7378;
 }
 .favorite {
   cursor: initial;
+}
+.validator-detail .identicon {
+  margin-top: 0.2rem;
+  margin-bottom: 0.4rem;
 }
 </style>

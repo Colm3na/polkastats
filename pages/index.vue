@@ -22,9 +22,10 @@
                   </nuxt-link>
                 </p>
                 <div class="row">
-                  <div class="col-md-3 text-center">
-                    <p class="display-1 mb-0 rank">{{ index+1 }}</p>
-                    <p class="bonded mb-1" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
+                  <div class="col-md-3 mb-2 text-center">
+                    <Identicon :address="validator.accountId" :size="80" :theme="'polkadot'" />
+                    <p class="mb-0 rank">rank #{{ index+1 }}</p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
                     <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
                   </div>
                   <div class="col-md-9">
@@ -81,7 +82,7 @@
                         <a v-clipboard:copy="validator.stashId" v-on:click="makeToast('Address ' + validator.stashId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                       </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                       <div class="col-md-3 mb-2">
                         <strong>Comission</strong>
                       </div>
@@ -156,11 +157,11 @@
                   </nuxt-link>                  
                   <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                     <div class="row">
-                      <div class="col-md-3 text-center">
-                        <p class="display-1 mb-0 rank">{{ index+1 }}</p>
-                        <p class="bonded mb-1" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
+                      <div class="col-md-3 mb-2 text-center">
+                        <Identicon :address="validator.accountId" :size="80" :theme="'polkadot'" />
+                        <p class="mb-0 rank">rank #{{ index+1 }}</p>
+                        <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
                         <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
-                        <editable v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
                       </div>
                       <div class="col-md-9">
                         <h5 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1"><a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">{{ validator.accountId }}</a> <a v-clipboard:copy="validator.accountId" v-on:click="makeToast('Address ' + validator.accountId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a></h5>
@@ -216,7 +217,7 @@
                             <a v-clipboard:copy="validator.stashId" v-on:click="makeToast('Address ' + validator.stashId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                           </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-2">
                           <div class="col-md-3 mb-2">
                             <strong>Comission</strong>
                           </div>
@@ -275,8 +276,9 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
-import bootstrap from 'bootstrap'
+import { mapMutations } from 'vuex';
+import bootstrap from 'bootstrap';
+import Identicon from "../components/identicon.vue";
 import editable from "../components/editable.vue";
 export default {
   head () {
@@ -388,7 +390,8 @@ export default {
     }
   },
   components: {
-    editable
+    editable,
+    Identicon
   }
 }
 </script>
@@ -416,6 +419,7 @@ body {
   background-color: rgba(239, 57, 74, 0.12) !important;
 }
 .rank {
+  font-size: 1.6rem;
   color: #7d7378;
 }
 .account {
@@ -461,5 +465,10 @@ body {
   color: #d75ea1;
   font-size: 0.9rem;
   margin-left: 0.1rem;
+}
+
+.validator .identicon {
+  margin-top: 0.6rem;
+  margin-bottom: 0.4rem;
 }
 </style>

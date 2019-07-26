@@ -13,6 +13,8 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/google-analytics": "^2.2.0",
+    "@polkadot/keyring": "^0.94.1",
+    "@polkadot/ui-identicon": "^0.41.1",
     "@polkadot/util": "^0.94.1",
     "@polkadot/util-crypto": "^0.94.1",
     "apexcharts": "^3.8.2",
@@ -24,7 +26,10 @@
     "moment": "^2.24.0",
     "nuxt": "^2.0.0",
     "nuxt-clipboard2": "^0.2.1",
-    "vue-apexcharts": "^1.4.0"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "vue-apexcharts": "^1.4.0",
+    "vuera": "^0.2.5"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
