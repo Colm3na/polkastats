@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <nuxt-link :to="{name: 'validator', query: { accountId: validators[index-1].accountId } }">
+                  <nuxt-link :to="{name: 'validator', query: { accountId: validators[index-1].accountId } }" :title="'Previous validator: ' + validators[index-1].accountId">
                     <i class="fas fa-2x fa-chevron-left"></i>
                   </nuxt-link>
                 </template>
@@ -17,7 +17,7 @@
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
-                  <nuxt-link :to="{name: 'validator', query: { accountId: validators[index+1].accountId } }">
+                  <nuxt-link :to="{name: 'validator', query: { accountId: validators[index+1].accountId } }" :title="'Next validator: ' + validators[index+1].accountId">
                     <i class="fas fa-2x fa-chevron-right"></i>
                   </nuxt-link>  
                 </template>
