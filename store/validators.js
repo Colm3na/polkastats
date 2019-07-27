@@ -16,8 +16,8 @@ export const mutations = {
 export const actions = {
   update (context) {
     var validatorsTmp;
-    // axios.get('https://polkastats.io:8443/validators')
-    axios.get('https://polkastats.io/json/validators.json')
+    axios.get('https://polkastats.io:8443/validators')
+    //axios.get('https://polkastats.io/json/validators.json')
       .then(function (response) {
         var validatorsTmp = response.data;
         axios.get('https://polkastats.io:8443/offline')
