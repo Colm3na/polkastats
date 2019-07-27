@@ -101,8 +101,15 @@
                     </div>
                     <template v-if="validator.stakers.others.length > 0">
                       <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                        <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+                        <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
                       </a>
+                    </template>
+                    <template v-if="validator.offline.length > 0">
+                      <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
+                        <h6 class="h6 offline d-inline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
+                      </a>
+                    </template>
+                    <template v-if="validator.stakers.others.length > 0">
                       <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
                         <div v-for="staker in validator.stakers.others" class="row">
                           <div class="col-8 who">                      
@@ -118,9 +125,6 @@
                       </div>
                     </template>
                     <template v-if="validator.offline.length > 0">
-                      <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
-                        <h6 class="h6 offline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
-                      </a>
                       <div class="offlineEvent collapse pt-2 pb-3"  v-bind:id="'offline' + index">
                         <div v-for="offlineEvent in validator.offline" class="row">
                           <div class="col-12" style="color: #d75ea1;">                      
@@ -237,8 +241,15 @@
                         </div>
                         <template v-if="validator.stakers.others.length > 0">
                           <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                            <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+                            <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
                           </a>
+                        </template>
+                        <template v-if="validator.offline.length > 0">
+                          <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
+                            <h6 class="h6 offline d-inline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
+                          </a>
+                        </template>
+                        <template v-if="validator.stakers.others.length > 0">
                           <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
                             <div v-for="staker in validator.stakers.others" class="row">
                               <div class="col-8 who">                      
@@ -254,9 +265,6 @@
                           </div>
                         </template>
                         <template v-if="validator.offline.length > 0">
-                          <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
-                            <h6 class="h6 offline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
-                          </a>
                           <div class="offlineEvent collapse pt-2 pb-3"  v-bind:id="'offline' + index">
                             <div v-for="offlineEvent in validator.offline" class="row">
                               <div class="col-12" style="color: #d75ea1;">                      
