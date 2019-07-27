@@ -2,6 +2,9 @@
   <div>
     <section>
       <b-container class="main pt-4">
+
+        <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
+
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
@@ -278,6 +281,7 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
+import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from "../components/identicon.vue";
 import editable from "../components/editable.vue";
@@ -297,7 +301,19 @@ export default {
         account: 'https://polkascan.io/pre/alexander/account/'
       },
       favorites: [],
-      polling: null
+      polling: null,
+      bestblocknumber: 0,
+      session: {  
+        currentEra: 0,
+        currentIndex: 0,
+        eraLength: 0,
+        eraProgress: 0,
+        lastEraLengthChange: 0,
+        lastLengthChange: 0,
+        sessionLength: 0,
+        sessionsPerEra: 0,
+        sessionProgress: 0
+      }
     }
   },
   computed: {
@@ -312,36 +328,63 @@ export default {
     if (this.$cookies.get('favorites')) {
       this.favorites = this.$cookies.get('favorites');
     }
+
+    // First time
+    this.getSession();
+    this.getBestBlockNumber();
     
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length == 0) {
       vm.$store.dispatch('validators/update');
     }
 
-    /* Update validators list every 10 seconds */
-    
+    /* Update validators list, best block and session info every 10 seconds */
     this.polling = setInterval(() => {
-      vm.$store.dispatch('validators/update')
+      vm.$store.dispatch('validators/update');
+      this.getSession();
+      this.getBestBlockNumber();
     }, 10000);
 
   },
   beforeDestroy: function () {
-	  clearInterval(this.polling);
+    clearInterval(this.polling);
+    clearInterval(this.sessionPolling);
   },
   methods: {
+    getSession: function () {
+      var vm = this;
+      axios.get('https://polkastats.io:8443/session')
+        .then(function (response) {
+          vm.session = response.data;
+        });
+    },
+    getBestBlockNumber: function () {
+      var vm = this;
+      axios.get('https://polkastats.io:8443/bestblocknumber')
+        .then(function (response) {
+          vm.bestblocknumber = response.data;
+        });
+    },    
     isHex(n) {
       var a = parseInt(n,16);
-      return (a.toString(16) === n)
+      return (a.toString(16) === n);
+    },
+    formatNumber(n) {
+      if (this.isHex(n)) {
+        return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      } else {
+        return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      }
     },
     formatDot(amount) {
       if (this.isHex(amount)) {
-        return (parseInt(amount, 16) / 1000000000000000).toFixed(3)
+        return (parseInt(amount, 16) / 1000000000000000).toFixed(3);
       } else {
-        return (amount / 1000000000000000).toFixed(3)
+        return (amount / 1000000000000000).toFixed(3);
       }
     },
     shortAddess(address) {
-      return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10)
+      return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
     },
     thousandsSeparator(n) {
         return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -471,5 +514,9 @@ body {
 .validator .identicon {
   margin-top: 0.4rem;
   margin-bottom: 0.4rem;
+}
+
+.session {
+
 }
 </style>
