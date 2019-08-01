@@ -24,8 +24,15 @@
       <div class="container"> 
         <div class="row mt-4 pt-5">
           <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-            <p class="system mb-5">Connected to chain {{system.chain}} using {{ system.nodeName}} version {{system.nodeVersion}}</p>
-            <p style="font-size: 0.95rem;">Made with <i class="far fa-heart"></i> by <a href="https://mariopino.es" title="Mario Pino">Mario Pino</a> en <a target="_blank" href="https://www.coworkingcolmena.com/" title="La Colmena">La Colmena</a> <span class="mx-2">|</span> Built with <a href="https://basicattentiontoken.org/" target="_blank"><img src="/img/brave/logo-full-color.png" class="img-fluid bat" /></a> <span class="mx-2">|</span> <a href="https://github.com/Colm3na/polkastats" aria-label="View source on GitHub" title="View source code on GitHub" target="_blank"><i class="fab fa-github"></i> View source code on GitHub</a></p>
+            
+            <h2 class="mb-3">Get in contact</h2>
+            <ul class="list-unstyled list-inline social mb-5 text-center">
+              <li class="list-inline-item mr-2"><a target="_blank" href="https://twitter.com/polkastats"><i class="fab fa-twitter"></i> @PolkaStats</a></li>
+              <li class="list-inline-item mr-2"><a target="_blank" href="https://keybase.io/encrypt#polkastats"><i class="fab fa-keybase"></i> PGP: 14C5 91D0 8ABA 03B7</a></li>
+              <li class="list-inline-item"><a target="_blank" href="mailto:polkastats@protonmail.com"><i class="fa fa-envelope"></i> polkastats@protonmail.com</a></li>
+            </ul>
+
+            <p style="font-size: 0.95rem;">Made with <i class="far fa-heart"></i> by <a href="https://mariopino.es" title="Mario Pino">Mario Pino</a> en <a target="_blank" href="https://www.coworkingcolmena.com/" title="La Colmena">La Colmena</a> <span class="mx-2">|</span> Built with <a href="https://basicattentiontoken.org/" target="_blank">Basic Atttention Token <img src="/img/brave/logo-full-color.png" class="img-fluid bat" /></a> <span class="mx-2">|</span> <a href="https://github.com/Colm3na/polkastats" aria-label="View source on GitHub" title="View source code on GitHub" target="_blank"><i class="fab fa-github"></i> View source code on GitHub</a></p>
           </div>
           </hr>
         </div>  
@@ -35,30 +42,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-export default {
-  data: function() {
-    return {
-      system: {
-        chain: "",
-        nodeName: "",
-        nodeVersion: ""
-      }
-    }
-  },
-  created: function () {
-    this.getSystemData();
-  },
-  methods: {
-    getSystemData: function () {
-      var vm = this;
-      axios.get('https://polkastats.io:8443/system')
-        .then(function (response) {
-          vm.system = response.data;
-        })
-    }
-  }
-} 
+export default {} 
 </script>
 <style>
 @import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
@@ -270,9 +254,9 @@ section .section-title {
   font-weight: 700;
 }
 .bat {
-  max-width: 30px;
-  vertical-align: bottom;
-  margin-left: .5rem;
+  max-width: 18px;
+  vertical-align: middle;
+  margin-left: .1rem;
 }
 
 @media (max-width:991px){

@@ -3,6 +3,13 @@
     <section>
       <b-container class="main pt-4">
 
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+          Connected to chain {{system.chain}} using {{ system.nodeName}} client version {{system.nodeVersion}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
         <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
 
         <nav>
@@ -291,6 +298,11 @@ export default {
   },
   data: function() {
     return {
+      system: {
+        chain: "",
+        nodeName: "",
+        nodeVersion: ""
+      },
       blockExplorer: {
         block: 'https://polkascan.io/pre/alexander/block/',
         account: 'https://polkascan.io/pre/alexander/account/'
@@ -325,6 +337,7 @@ export default {
     }
 
     // First time
+    this.getSystemData();
     this.getSession();
     this.getBestBlockNumber();
     
@@ -346,6 +359,13 @@ export default {
     clearInterval(this.sessionPolling);
   },
   methods: {
+    getSystemData: function () {
+      var vm = this;
+      axios.get('https://polkastats.io:8443/system')
+        .then(function (response) {
+          vm.system = response.data;
+        })
+    },
     getSession: function () {
       var vm = this;
       axios.get('https://polkastats.io:8443/session')
