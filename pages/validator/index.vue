@@ -43,23 +43,23 @@
                           <strong>Controller</strong>
                         </div>
                         <div class="col-md-9 mb-2">
+                          <Identicon :address="validator.controllerId" :size="20" :theme="'polkadot'" />
                           <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }} </span>
                             <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
                           </a>
-                          <a v-clipboard:copy="validator.controllerId" v-on:click="makeToast('Address ' + validator.controllerId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-3 mb-2">
                           <strong>Session</strong>
                         </div>
-                        <div class="col-md-9 mb-2">                 
+                        <div class="col-md-9 mb-2">   
+                          <Identicon :address="validator.nextSessionId" :size="20" :theme="'polkadot'" />              
                           <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
                             <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>     
                           </a>
-                          <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                         </div>
                       </div>
                     </div>
@@ -69,11 +69,11 @@
                           <strong>Controller/Session</strong>
                         </div>
                         <div class="col-md-9 mb-2">
+                          <Identicon :address="validator.nextSessionId" :size="20" :theme="'polkadot'" />
                           <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
                             <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>
                           </a>
-                          <a v-clipboard:copy="validator.nextSessionId" v-on:click="makeToast('Address ' + validator.nextSessionId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                         </div>
                       </div>
                     </div>
@@ -82,11 +82,11 @@
                         <strong>Stash</strong>
                       </div>
                       <div class="col-md-9 mb-2">
+                        <Identicon :address="validator.stashId" :size="20" :theme="'polkadot'" />
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
                           <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
                         </a>
-                        <a v-clipboard:copy="validator.stashId" v-on:click="makeToast('Address ' + validator.stashId + ' copied to the clipboard', 'Notification', 'success', true)" title="Copy address to clipboard"><i class="fas fa-copy"></i></a>
                       </div>
                     </div>
                     <div class="row">
@@ -699,5 +699,9 @@ export default {
 }
 .change {
   vertical-align: middle;
+}
+.validator-detail .col-md-9 .identicon {
+  display: inline;
+  margin-right: 0.5rem;
 }
 </style>
