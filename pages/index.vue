@@ -92,7 +92,7 @@
                         <strong>Comission</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
-                        {{ formatDot(validator.validatorPrefs.validatorPayment) }} DOT
+                        {{ formatDot6Dec(validator.validatorPrefs.validatorPayment) }} DOT
                       </div>
                     </div>
                     <template v-if="validator.stakers.others.length > 0">
@@ -224,7 +224,7 @@
                             <strong>Comission</strong>
                           </div>
                           <div class="col-md-9 mb-2 fee">
-                            {{ formatDot(validator.validatorPrefs.validatorPayment) }} DOT
+                            {{ formatDot6Dec(validator.validatorPrefs.validatorPayment) }} DOT
                           </div>
                         </div>
                         <template v-if="validator.stakers.others.length > 0">
@@ -392,6 +392,13 @@ export default {
         return (amount / 1000000000000000).toFixed(3);
       }
     },
+    formatDot6Dec(amount) {
+      if (this.isHex(amount)) {
+        return (parseInt(amount, 16) / 1000000000000000).toFixed(6)
+      } else {
+        return (amount / 1000000000000000).toFixed(6)
+      }
+    },    
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
     },

@@ -94,7 +94,7 @@
                         <strong>Comission</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
-                        {{ formatDot(validator.validatorPrefs.validatorPayment) }} DOT
+                        {{ formatDot6Dec(validator.validatorPrefs.validatorPayment, 6) }} DOT
                       </div>
                     </div>
                     <div class="row mb-2">
