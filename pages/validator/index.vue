@@ -33,8 +33,8 @@
                   <div class="col-md-3 mb-2 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                     <p class="mb-0 rank">rank #{{ index+1 }}</p>
-                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
-                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
+                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span></small></p>
                   </div>
                   <div class="col-md-9">
                     <div v-if="validator.controllerId != validator.nextSessionId">
@@ -94,7 +94,7 @@
                         <strong>Comission</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
-                        {{ formatDot6Dec(validator.validatorPrefs.validatorPayment, 6) }} DOT
+                        {{ formatDot(validator.validatorPrefs.validatorPayment, 6) }}
                       </div>
                     </div>
                     <div class="row mb-2">
@@ -119,7 +119,7 @@
                           </a>
                         </div>
                         <div class="col-4 text-right value">
-                          {{ formatDot(staker.value) }} DOT
+                          {{ formatDot(staker.value) }}
                         </div>
                       </div>
                     </div>
@@ -142,15 +142,15 @@
           </template>
         </template>
         <div class="mt-5 text-center" id="stake-evolution-daily-chart">
-          <h3>Total bonded - Daily chart <small class="change text-success ml-3" v-if="daily.last - daily.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot6Dec(daily.last - daily.first) }} DOT</small><small class="change text-danger ml-3" v-if="daily.last - daily.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot6Dec(daily.last - daily.first) }} DOT</small></h3>
+          <h3>Total bonded - Daily chart <small class="change text-success ml-3" v-if="daily.last - daily.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot(daily.last - daily.first) }}</small><small class="change text-danger ml-3" v-if="daily.last - daily.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot(daily.last - daily.first) }}</small></h3>
           <apexchart type=line height=350 :options="StakeEvolutionDailyChartOptions" :series="StakeEvolutionDailySeries" />
         </div>
         <div class="mt-5 mb-5 text-center" id="stake-evolution-weekly-chart">
-          <h3>Total bonded - Weekly chart <small class="change text-success ml-3" v-if="weekly.last - weekly.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot6Dec(weekly.last - weekly.first) }} DOT</small><small class="change text-danger ml-3" v-if="weekly.last - weekly.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot6Dec(weekly.last - weekly.first) }} DOT</small></h3>
+          <h3>Total bonded - Weekly chart <small class="change text-success ml-3" v-if="weekly.last - weekly.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot(weekly.last - weekly.first) }}</small><small class="change text-danger ml-3" v-if="weekly.last - weekly.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot(weekly.last - weekly.first) }}</small></h3>
           <apexchart type=line height=350 :options="StakeEvolutionWeeklyChartOptions" :series="StakeEvolutionWeeklySeries" />
         </div>
         <div class="mb-5 text-center" id="stake-evolution-monthly-chart">
-          <h3>Total bonded - Monthly chart <small class="change text-success ml-3" v-if="monthly.last - monthly.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot6Dec(monthly.last - monthly.first) }} DOT</small><small class="change text-danger ml-3" v-if="monthly.last - monthly.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot6Dec(monthly.last - monthly.first) }} DOT</small></h3>
+          <h3>Total bonded - Monthly chart <small class="change text-success ml-3" v-if="monthly.last - monthly.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot(monthly.last - monthly.first) }}</small><small class="change text-danger ml-3" v-if="monthly.last - monthly.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot(monthly.last - monthly.first) }}</small></h3>
           <apexchart type=line height=350 :options="StakeEvolutionMonthlyChartOptions" :series="StakeEvolutionMonthlySeries" />
         </div>
       </b-container>
@@ -163,6 +163,8 @@ import axios from 'axios';
 import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
 import Identicon from "../../components/identicon.vue";
+import { formatBalance, isHex } from '@polkadot/util';
+formatBalance.setDefaults({ decimals: 15, unit: 'DOT' });
 export default {
   head () {
     return {
@@ -592,22 +594,11 @@ export default {
           
         })
     },
-    isHex(n) {
-      var a = parseInt(n,16);
-      return (a.toString(16) === n)
-    },
     formatDot(amount) {
-      if (this.isHex(amount)) {
-        return (parseInt(amount, 16) / 1000000000000000).toFixed(3)
+      if (isHex(amount)) {
+        return formatBalance(parseInt(amount, 16));
       } else {
-        return (amount / 1000000000000000).toFixed(3)
-      }
-    },
-    formatDot6Dec(amount) {
-      if (this.isHex(amount)) {
-        return (parseInt(amount, 16) / 1000000000000000).toFixed(6)
-      } else {
-        return (amount / 1000000000000000).toFixed(6)
+        return formatBalance(amount);
       }
     },
     shortAddess(address) {
@@ -693,15 +684,15 @@ export default {
 .validator-detail .favorite {
   cursor: initial;
 }
-.validator-detail .identicon {
-  margin-top: 0.2rem;
-  margin-bottom: 0.4rem;
-}
 .change {
   vertical-align: middle;
 }
 .validator-detail .col-md-9 .identicon {
   display: inline;
-  margin-right: 0.5rem;
+  margin-right: 0.2rem;
+  cursor: copy;
+}
+.validator-detail .col-md-9 .identicon div {
+  display: inline;
 }
 </style>

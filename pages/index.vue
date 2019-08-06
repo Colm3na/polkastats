@@ -26,8 +26,8 @@
                   <div class="col-md-3 mb-2 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                     <p class="mb-0 rank">rank #{{ index+1 }}</p>
-                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
-                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
+                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span></small></p>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
@@ -92,7 +92,7 @@
                         <strong>Comission</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
-                        {{ formatDot6Dec(validator.validatorPrefs.validatorPayment) }} DOT
+                        {{ formatDot(validator.validatorPrefs.validatorPayment) }}
                       </div>
                     </div>
                     <template v-if="validator.stakers.others.length > 0">
@@ -115,7 +115,7 @@
                             </a>
                           </div>
                           <div class="col-4 text-right value">
-                            {{ formatDot(staker.value) }} DOT
+                            {{ formatDot(staker.value) }}
                           </div>
                         </div>
                       </div>
@@ -157,8 +157,8 @@
                       <div class="col-md-3 mb-2 text-center">
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                         <p class="mb-0 rank">rank #{{ index+1 }}</p>
-                        <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
-                        <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
+                        <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
+                        <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span></small></p>
                         <editable v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
                       </div>
                       <div class="col-md-9">
@@ -224,7 +224,7 @@
                             <strong>Comission</strong>
                           </div>
                           <div class="col-md-9 mb-2 fee">
-                            {{ formatDot6Dec(validator.validatorPrefs.validatorPayment) }} DOT
+                            {{ formatDot(validator.validatorPrefs.validatorPayment) }}
                           </div>
                         </div>
                         <template v-if="validator.stakers.others.length > 0">
@@ -247,7 +247,7 @@
                                 </a>
                               </div>
                               <div class="col-4 text-right value">
-                                {{ formatDot(staker.value) }} DOT
+                                {{ formatDot(staker.value) }}
                               </div>
                             </div>
                           </div>
@@ -281,6 +281,8 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from "../components/identicon.vue";
 import editable from "../components/editable.vue";
+import { formatBalance, isHex } from '@polkadot/util';
+formatBalance.setDefaults({ decimals: 15, unit: 'DOT' });
 export default {
   head () {
     return {
@@ -373,32 +375,21 @@ export default {
         .then(function (response) {
           vm.bestblocknumber = response.data;
         });
-    },    
-    isHex(n) {
-      var a = parseInt(n,16);
-      return (a.toString(16) === n);
-    },
+    }, 
     formatNumber(n) {
-      if (this.isHex(n)) {
+      if (isHex(n)) {
         return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       } else {
         return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       }
     },
     formatDot(amount) {
-      if (this.isHex(amount)) {
-        return (parseInt(amount, 16) / 1000000000000000).toFixed(3);
+      if (isHex(amount)) {
+        return formatBalance(parseInt(amount, 16));
       } else {
-        return (amount / 1000000000000000).toFixed(3);
+        return formatBalance(amount);
       }
-    },
-    formatDot6Dec(amount) {
-      if (this.isHex(amount)) {
-        return (parseInt(amount, 16) / 1000000000000000).toFixed(6)
-      } else {
-        return (amount / 1000000000000000).toFixed(6)
-      }
-    },    
+    },  
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
     },
