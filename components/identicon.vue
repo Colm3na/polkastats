@@ -1,7 +1,7 @@
 <template>
-  <a class="clipboard" v-clipboard:copy="address" v-on:click="makeToast('Address ' + address + ' copied to the clipboard', 'Notification', 'success', true)" v-bind:title="'Copy address ' + address + ' to clipboard'">             
+  <a class="clipboard" v-clipboard:copy="value" v-on:click="makeToast('Address ' + value + ' copied to the clipboard', 'Notification', 'success', true)" v-bind:title="'Copy address ' + value + ' to clipboard'">             
     <Identicon
-      :value="address"
+      :value="value"
       :size="size"
       :theme="theme"
       class="identicon"
@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import Identicon from '@polkadot/ui-identicon'
+import Identicon from '@polkadot/vue-identicon';
 export default {
-  props: ["address", "size", "theme"],
+  props: ["value", "size", "theme"],
   methods: {
     makeToast(content = '', title = '', variant = null, solid = false) {
       this.$bvToast.toast(content, {

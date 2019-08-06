@@ -24,7 +24,7 @@
                 </p>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
-                    <Identicon :address="validator.accountId" :size="80" :theme="'polkadot'" />
+                    <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                     <p class="mb-0 rank">rank #{{ index+1 }}</p>
                     <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
                     <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
@@ -41,7 +41,7 @@
                           <strong>Controller</strong>
                         </div>
                         <div class="col-md-9 mb-2">
-                          <Identicon :address="validator.controllerId" :size="20" :theme="'polkadot'" />
+                          <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
                           <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
                             <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
@@ -53,7 +53,7 @@
                           <strong>Session</strong>
                         </div>
                         <div class="col-md-9 mb-2">
-                          <Identicon :address="validator.nextSessionId" :size="20" :theme="'polkadot'" />              
+                          <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />              
                           <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
                             <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>     
@@ -67,7 +67,7 @@
                           <strong>Controller/Session</strong>
                         </div>
                         <div class="col-md-9 mb-2">
-                          <Identicon :address="validator.nextSessionId" :size="20" :theme="'polkadot'" />
+                          <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />
                           <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
                             <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>
@@ -80,7 +80,7 @@
                         <strong>Stash</strong>
                       </div>
                       <div class="col-md-9 mb-2">
-                        <Identicon :address="validator.stashId" :size="20" :theme="'polkadot'" />
+                        <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
                           <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
@@ -155,7 +155,7 @@
                   <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                     <div class="row">
                       <div class="col-md-3 mb-2 text-center">
-                        <Identicon :address="validator.accountId" :size="80" :theme="'polkadot'" />
+                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                         <p class="mb-0 rank">rank #{{ index+1 }}</p>
                         <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }} DOT</p>
                         <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }} DOT</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }} DOT)</span></small></p>
@@ -173,7 +173,7 @@
                               <strong>Controller</strong>
                             </div>
                             <div class="col-md-9 mb-2">
-                              <Identicon :address="validator.controllerId" :size="20" :theme="'polkadot'" />
+                              <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
                               <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
                                 <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
                                 <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
@@ -185,7 +185,7 @@
                               <strong>Session</strong>
                             </div>
                             <div class="col-md-9 mb-2">
-                              <Identicon :address="validator.nextSessionId" :size="20" :theme="'polkadot'" />            
+                              <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />            
                               <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                                 <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
                                 <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>     
@@ -199,7 +199,7 @@
                               <strong>Controller/Session</strong>
                             </div>
                             <div class="col-md-9 mb-2">
-                              <Identicon :address="validator.nextSessionId" :size="20" :theme="'polkadot'" />
+                              <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />
                               <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                                 <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
                                 <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>
@@ -212,7 +212,7 @@
                             <strong>Stash</strong>
                           </div>
                           <div class="col-md-9 mb-2">
-                            <Identicon :address="validator.nextSessionId" :size="20" :theme="'polkadot'" />
+                            <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />
                             <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                               <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
                               <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
@@ -518,16 +518,12 @@ body {
   font-size: 0.9rem;
   margin-left: 0.1rem;
 }
-
-.validator .identicon {
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
-}
-.session {
-
-}
 .validator .col-md-9 .identicon {
   display: inline;
-  margin-right: 0.5rem;
+  margin-right: 0.2rem;
+  cursor: copy;
+}
+.validator .col-md-9 .identicon div {
+  display: inline;
 }
 </style>

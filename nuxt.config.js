@@ -28,7 +28,6 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/vuera'
   ],
   /*
   ** Nuxt.js modules
