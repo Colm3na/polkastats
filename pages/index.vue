@@ -282,6 +282,7 @@ import bootstrap from 'bootstrap';
 import Identicon from "../components/identicon.vue";
 import editable from "../components/editable.vue";
 import { formatBalance, isHex } from '@polkadot/util';
+formatBalance.setDefaults({ decimals: 15, unit: 'DOT' });
 export default {
   head () {
     return {
