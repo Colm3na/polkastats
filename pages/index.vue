@@ -282,7 +282,6 @@ import bootstrap from 'bootstrap';
 import Identicon from "../components/identicon.vue";
 import editable from "../components/editable.vue";
 import { formatBalance, isHex } from '@polkadot/util';
-formatBalance.setDefaults({ decimals: 15, unit: 'DOT' });
 export default {
   head () {
     return {
@@ -376,13 +375,21 @@ export default {
           vm.bestblocknumber = response.data;
         });
     }, 
+    isHex(n) {
+      var a = parseInt(n,16);
+      return (a.toString(16) === n)
+    },
+    // Use here this.isHex function
     formatNumber(n) {
-      if (isHex(n)) {
+      if (this.isHex(n)) {
+        //console.log(n + ' is HEX');
         return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       } else {
+        //console.log(n + ' is NOT HEX');
         return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       }
     },
+    // Use here isHex function bundled in @polkadot/util
     formatDot(amount) {
       if (isHex(amount)) {
         return formatBalance(parseInt(amount, 16));

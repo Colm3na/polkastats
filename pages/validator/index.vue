@@ -687,6 +687,7 @@ export default {
 .change {
   vertical-align: middle;
 }
+
 .validator-detail .col-md-9 .identicon {
   display: inline;
   margin-right: 0.2rem;
