@@ -357,21 +357,21 @@ export default {
   methods: {
     getSystemData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/system')
+      axios.get('https://alexander.polkastats.io:8443/system')
         .then(function (response) {
           vm.system = response.data;
         })
     },
     getSession: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/session')
+      axios.get('https://alexander.polkastats.io:8443/session')
         .then(function (response) {
           vm.session = response.data;
         });
     },
     getBestBlockNumber: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/bestblocknumber')
+      axios.get('https://alexander.polkastats.io:8443/bestblocknumber')
         .then(function (response) {
           vm.bestblocknumber = response.data;
         });
